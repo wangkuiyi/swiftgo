@@ -1,0 +1,494 @@
+Swift and Go
+(a comparison on syntax)
+
+Yi Wang
+LinkedIn
+
+* Swift and Go
+
+This slide is not for choosing Go or Swift; instead, we might need to
+learn both.
+
+Go is highly productive in programming servers and Swift is for
+programming mobile apps on iOS.
+
+Although Swift copied many syntax features from Go, it copies from not
+only Go.  Whereas, Go designers work hard to make syntax "less is
+more".
+
+* Constants and Variables
+
+Constants
+
+    const version  int = 1  // Go
+    let   version: Int = 1  // Swift
+
+Variables
+
+    var count  int = 1.0  // Go
+    var count: Int = 1.0  // Swift
+
+Go uses *const*; Swift uses *let* and a colon.
+
+
+* Type Inference
+
+    let version  = 1.0  // Swift
+        version := 1.0  // Go
+
+    var count: Int  = 1.0  // Swift
+        count  int := 1.0  // Go
+
+Go allows to emit *let* and *var*, with minor cost of a colon.
+
+* Batch Definition
+
+Go makes them one-per-line
+
+    var (
+      version = 1
+      count   = 0
+    )
+
+Swift makes all of them on one line
+
+    var version = 1, count = 0
+
+* String
+
+Swift has methods builtin for string type:
+
+    var components = "~/Documents/Swift".pathComponents
+
+Go provides string manipulation methods in package `strings`:
+
+    components := strings.Split("~/Documents/Swift", "/")
+
+* Character
+
+Swift can enumerate over characters in a string
+
+    for character in "mouse 鼠标" {
+      println(character)
+    }
+
+so does Go
+
+    for _, character := range "mouse 鼠标" {
+       println(character)
+    }
+
+* Formatting
+
+Swift provides something called "string interpolation":
+
+    let a = 3, b = 5
+    let mathResult = "\(a) times \(b) is \(a * b)"
+
+In Go, we can do
+
+    mathResult := fmt.Sprint(a, "times", b, "is", a*b)
+
+* Array and Dictionary
+
+Define a Swift array and Go slice of strings
+
+    var names  =         ["Anna", "Alex", "Brian""] // Swift
+        names := []string{"Anna", "Alex", "Brian""} // Go
+
+Define a Swift dictionary and Go map
+
+    var legs  =               ["ant":6, "snake":0, "cheeta":4] // Swift
+        legs := map[string]int{"ant":6, "snake":0, "cheeta":4] // Go
+
+* Loop
+
+Swift privdes *while* and *for*; whereas Go has only *for*.
+
+    while !sated {  // Swift
+      eatCake()
+    }
+
+    for !sated {    // Go
+      eatCake()
+    }
+
+    for var a = 0; a < 10; ++a {  // Swift
+      println(a)
+    }
+
+    for a := 0; a < 10; a++ {     // Go
+      println(a)
+    }
+
+* For Range
+
+Swift has *in* and Go has *range* to enumerate strings, arrays, and
+dictionaries.
+
+    for name in names {  // Swift
+      println(name)
+    }
+
+    for _, name := range names {  // Go
+      println(name)
+    }
+
+    for (animal, leg) in legs {  // Swift
+      println(animal, leg)
+    }
+
+    for animal, leg := range legs {  // Go
+      println(animal, leg)
+    }
+
+* Numerical Range
+
+Swift allows specifying numerical ranges in multiple ways
+
+    for number in 0..5 {
+      println(number)
+    }
+
+    for number is 1...5 {
+      println(number)
+    }
+
+Go does not provide such syntax.
+
+* Append to Arrays
+
+Swift has operator *+=*.
+
+    var shoppings = ["Eggs", "Milk"]
+    shoppings += "Flour"
+    shoppings += ["Cheese", "Butter"]
+
+Go has built-in function *append*.
+
+    shoppings := ["Eggs", "Milk"]
+    shoppings = append(shoppings, "Flour")
+    shoppings = append(shoppings, "Cheese", "Butter")
+
+* Assign to Arrays
+
+Swift supports assigning to a range of elements in an array:
+
+    shoppings[3...5] = ["Bananas", "Apples"]
+
+Go does not support this.
+
+* Retrieving a Value from a Dictionary (Swift)
+
+Swift introduces a new type *Int?*
+
+    let legs = ["ant":6, "snake":0]
+    let count: Int? = legs["aardvark"]
+    if count == nil {
+        println("Aardvark wasn't found")
+    } else {
+        let c = count!
+        println("An aardvark has \(c\) legs")
+    }
+
+Go makes the retrieval operation returns two values:
+
+    legs := map[string]int{"ant":6, "snake":0}
+    if c, ok := legs["aardvark"]; !ok {
+        println("Aardvark wasn't found")
+    } else {
+        println("An aardvark has ", c, " legs")
+    }
+
+* If and Switch
+
+Swift's *if* does not have parenthesis, as required by C/C++.
+
+Swift's *switch* does not need `break`, as required by C/C++.
+
+These are the same as Go.
+
+* Ranged Case
+
+Swift's `switch` supports *ranged* case:
+
+    switch count {
+      case 0...8:
+         println("Few legs")
+      default:
+         pirntln("Lots of legs")
+    }
+
+With Go, we can do:
+
+    switch {
+      case 0 <= count && count <= 8:
+        println("Few legs")
+      default:
+        println("Lots of legs")
+    }
+
+However, if the type of `count` is float, instead of int, the Go
+version still works -- just change 0 to 0.0 and 8 to 8.8 -- but
+Swift's way does not.
+
+* Functions
+
+Swift requires an extra ":" for each paramter of a function:
+
+    func hello(name: String) {
+      println("Hello \(name)!")
+    }
+
+Go doesn't:
+
+    func hello(name string) {
+      println("Hello ", name, "!")
+    }
+
+* Function Paramters
+
+Swift supports default parameter values.
+
+Go Authors intentionally forbids default parameter values.  So did
+Google C/C++ code style.
+
+* Returning Value
+
+The return value of Swift must be denoted by `->`
+
+    func hello(name: String) -> String {
+      return "Hello " + name
+    }
+
+Go doesn't
+
+    func hello(name string) string {
+      return "Hello " + name
+    }
+
+It seems that the useless and redundent `->` was invented by and
+copied from Haskell.
+
+* Returning Multiple Values
+
+Both Swift and Go support multiple return values:
+
+    func refresh() -> (Int, String) {
+      return (200, "Success")
+    }
+
+Again, Go can do it more concisely
+
+    func refresh() (int, string) {
+      return 200, "Success"
+    }
+
+* Tuples
+
+The multiple-return-value of Swift functions is of a new type *tuple*.
+
+    let (status, msg) = refresh()
+
+whereas Go do it in a straightforward way:
+
+    status, msg := refesh()
+
+* Tuples with Enumeration
+
+Tuples are also used in enumerating dictionaries:
+
+    for (animal, leg) in legs {
+      println("\(animal)s have \(leg) legs")
+    }
+
+it does not seem necessary to introduce *tuple*, since Go can do the
+same thing without introducing *tuple*:
+
+    for animal, leg := range legs {
+      println(animal, "s have ", leg, " legs")
+    }
+
+* Closures
+
+The Swift version is
+
+    let greeting: () -> () = {
+      println("Hello")
+    }
+
+The Go version is
+
+    greeting := func() {
+      println("Hello")
+    }
+
+Go use *func* to define both functions and closures; however, Swift
+use deferrent syntax to functions and closures.
+
+* Closures as Parameters
+
+Swift can take closrues as parameters
+
+    func repeat(count: Int, task: (i: Int) -> ()) {
+      for i in 0..count {
+        task(i)
+      }
+    }
+
+    repeat(2, { (i: Int) -> () in println(i") })
+
+as does Go
+
+    func repeat(count int, task func(i int)) {
+      for i := 0; i < count; i++ {
+        task(i)
+      }
+    }
+
+    repeat(2, func(i int) { println("Hello!") })
+
+
+* Trailing Closures
+
+In above example, the invocation of `repeat`
+
+    repeat(2, { println("Hello!") }
+
+can be written as
+
+    repeat(2) { (i: Int) -> () in
+      println("Hello!")
+    }
+
+But I have no idea why we need this...
+
+* Classes
+
+Swift has *class* like Objective-C, C++, and Java.
+
+Go does not have the concept of *class*.  Instead, almost every type
+cound have attached method, so every type is like a _class_.
+
+* Properties
+
+Swift classes contain properties
+
+    class Vehicle {
+      var numWheels: Int
+    }
+
+Since Go *struct* can contain variables like class properties, I
+compare Swift *class* with Go *struct*
+
+    type Vehicle struct {
+      numWheels int
+    }
+
+* Computed Properties
+
+Swift supports *computed* *properties*.  For example, `description`
+below
+
+    class Vehicle {
+      var numWheels: Int
+      var description: String {
+        get {
+          return "\(numWheels) wheels"
+        }
+      }
+    }
+
+Is computed property necessary? Why not just a member function?
+
+    func (v *Vehicle) Description() string {
+      return fmt.Sprint(v.numWheels, "wheels")
+    }
+
+* Initializer
+
+Swift supports default property values and class initialization
+
+    class Vehicle {
+      var numWheels = 0
+    }
+
+    let someVehicle = Vehicle()
+
+With Go, we conventionally define a *NewVehicle* function
+
+    func NewVehicle(nw int) *Vehicle {
+      return &Vehicle{numWheels: nw}
+    }
+
+    someVehicle := NewVehicle()
+
+* Subclassing
+
+Swift has class hierarchy, as C, Objective-C, C++ and Java do.
+
+    class Bicycle: Vehicle {
+      init() {
+        super.init()
+        numWheels = 2
+      }
+    }
+
+Go does not have the concept of *subclassing*, but it can do
+*embedding*
+
+    type Bicycle struct {
+      *Vehicle
+    }
+
+    func NewBicycle(nw int) *Bicycle {
+      return &Bicycle{NewVehicle(nw)}
+    }
+
+* Overriding a Property
+
+Swift introduces the keyword *override*
+
+    class Car: Vehicle {
+      var speed = 0.0
+      init() {
+        super.init()
+        numberOfWheels = 4
+      }
+      override var description: String {
+        return super.description + ", \(speed) mph"
+      }
+    }
+
+Go says no need to have it
+
+    type Car struct {
+        *Vehicle
+        speed float64
+    }
+
+    func (c *Car) Description() string {
+        return fmt.Sprint(c.Vehicle.Description(), ",", c.speed, "mph")
+    }
+
+* Property Observers
+
+    class ParentsCar: Car {
+      override var speed: Double {
+        willSet {
+          // newValue is available here
+        }
+        didSet {
+          // oldValue is available here
+        }
+      }
+    }
+
+Again, Go says no need for this
+
+    func (p *ParentCar) SetSpeed(newSpeed float64) {
+      // newSpeed is available here
+      oldSpeed := p.speed
+      p.speed = speed
+      // oldSpeed is available here
+    }
