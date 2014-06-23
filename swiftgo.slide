@@ -473,6 +473,8 @@ Go says no need to have it
 
 * Property Observers
 
+Swift introduces property observers
+
     class ParentsCar: Car {
       override var speed: Double {
         willSet {
@@ -484,7 +486,7 @@ Go says no need to have it
       }
     }
 
-Again, Go says no need for this
+which is designed for preview GUI creation.  Go does not support this.
 
     func (p *ParentCar) SetSpeed(newSpeed float64) {
       // newSpeed is available here
