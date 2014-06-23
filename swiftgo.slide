@@ -12,10 +12,6 @@ learn both.
 Go is highly productive in programming servers and Swift is for
 programming mobile apps on iOS.
 
-Although Swift copied many syntax features from Go, it copies from not
-only Go.  Whereas, Go designers work hard to make syntax "less is
-more".
-
 * Constants and Variables
 
 Constants
