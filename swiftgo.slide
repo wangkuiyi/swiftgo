@@ -54,6 +54,16 @@ Swift makes all of them on one line
 
     var version = 1, count = 0
 
+* Swift Constants are not Go Constants
+
+Go constants are created at compile time, and can only be numbers,
+characters, strings or booleans.
+
+Swift constants can be any type, including classes or structs.  And
+class variables are in fact references, so you can change properties
+of a constant reference.  If you want properties also constants, you
+can use structs, which are passed by their literal values.
+
 * String
 
 Swift has methods builtin for string type:
